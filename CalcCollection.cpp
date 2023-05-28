@@ -82,7 +82,9 @@ vector<string> getCollections(){
 		if(temp=='{'){
 			elem+=collectionToString();
 		}else if(temp=='}'){
-			result.push_back(elem);
+			if(elem!=""){
+				result.push_back(elem);
+			}
 			sort(result.begin(),result.end());
 			result.erase(unique(result.begin(),result.end()),result.end());
 			break;
@@ -110,10 +112,10 @@ vector<string> calcInter(vector<string> a,vector<string> b){
 		if(a[a_p]<b[b_p]){
 			a_p++;
 		}
-		if(b[b_p]<a[a_p]){
+		else if(b[b_p]<a[a_p]){
 			b_p++;
 		}
-		if(a[a_p]==b[b_p]){
+		else if(a[a_p]==b[b_p]){
 			res.push_back(a[a_p]);
 			a_p++;
 			b_p++;
@@ -132,11 +134,11 @@ vector<string> calcUnion(vector<string> a,vector<string> b){
 			res.push_back(a[a_p]);
 			a_p++;
 		}
-		if(b[b_p]<a[a_p]){
+		else if(b[b_p]<a[a_p]){
 			res.push_back(b[b_p]);
 			b_p++;
 		}
-		if(a[a_p]==b[b_p]){
+		else if(a[a_p]==b[b_p]){
 			res.push_back(a[a_p]);
 			a_p++;
 			b_p++;
@@ -163,10 +165,10 @@ vector<string> calcDiff(vector<string> a,vector<string> b){
 			res.push_back(a[a_p]);
 			a_p++;
 		}
-		if(b[b_p]<a[a_p]){
+		else if(b[b_p]<a[a_p]){
 			b_p++;
 		}
-		if(a[a_p]==b[b_p]){
+		else if(a[a_p]==b[b_p]){
 			a_p++;
 			b_p++;
 		}

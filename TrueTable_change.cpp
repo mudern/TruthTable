@@ -337,6 +337,73 @@ string genCNF() {
 	return res;
 }
 
+//生成m,M形式的主析取范式DNF和主合取范式CNF
+
+//编写字符与数字加和为string函数
+string addCharInt(char c, int i) {
+	string res;
+	stack<int> digits;
+	if (i == 0) {
+		digits.push(0);
+	} else {
+		while (i > 0) {
+			digits.push(i % 10);
+			i /= 10;
+		}
+	}
+	res += c;
+	while (!digits.empty()) {
+		char i_char = '0' + digits.top();
+		res += i_char;
+		digits.pop();
+	}
+	return res;
+}
+
+string gen_mDNF(){
+	string res ;
+	int argu_size = argu.size();
+	int assign_num = pow(2, argu.size());
+	int counter=0;
+	for (int i = 0; i < assign_num; i++) {
+		//查看真值表中所有输出为1的行
+		if (truth_res[i].res == 1) {
+			if(counter!=0){
+				res+='&';
+			}
+			int num=0;
+			for(int j=0;j<argu_size;j++){
+				num+=pow(2,j)*truth_res[i].assign_value[argu[j]];;
+			}
+			res+=addCharInt('m',num);
+			counter++;
+		}
+	}
+	return res;
+}
+
+string gen_MCNF(){
+	string res ;
+	int argu_size = argu.size();
+	int assign_num = pow(2, argu.size());
+	int counter=0;
+	for (int i = 0; i < assign_num; i++) {
+		//查看真值表中所有输出为1的行
+		if (truth_res[i].res == 0) {
+			if(counter!=0){
+				res+='|';
+			}
+			int num=0;
+			for(int j=0;j<argu_size;j++){
+				num+=pow(2,j)*truth_res[i].assign_value[argu[j]];;
+			}
+			res+=addCharInt('M',num);
+			counter++;
+		}
+	}
+	return res;
+}
+
 //生成输入公式类型
 //通过genResult生成的二维向量来进行公式类型判断
 string genType(){
@@ -409,6 +476,19 @@ void printCNF() {
 	return;
 }
 
+//打印m,M形式的主析取范式和主合取范式
+void print_MDNF(){
+	cout << "主析取范式还可以写作:" << endl;
+	cout << gen_mDNF() << endl;
+	return;
+}
+
+void print_mCNF(){
+	cout << "主合取范式还可以写作:" << endl;
+	cout << gen_MCNF() << endl;
+	return;
+}
+
 //根据结果数组打印公式类型
 void printType() {
 	cout<<genType()<<endl;
@@ -425,7 +505,9 @@ int main() {
 	printHeader(input);
 	printTable();
 	printDNF();
+	print_MDNF();
 	printCNF();
+	print_mCNF();
 	printType();
 	return 0;
 }
